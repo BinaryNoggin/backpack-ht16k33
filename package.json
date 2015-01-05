@@ -1,0 +1,35 @@
+{
+  "name": "backpack-ht16k33",
+  "version": "0.1.0",
+  "description": "Use to support the adafruit led backpacks - ht16k33",
+  "main": "index.js",
+  "scripts": {
+    "test": "tinytap -e 'tessel run {} ${RELAY_PORT}' test/*.js"
+  },
+  "hardware": {
+    "./examples": false,
+    "./test": false
+  },
+  "devDependencies": {
+     "tinytap": "1.2.2",
+     "async": "0.9.0"
+   },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/adkron/backpack-ht16k33"
+  },
+  "keywords": [
+    "tessel",
+    "ht16k33"
+  ],
+  "author": "Amos King <amos.l.king@gmail.com>",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/adkron/backpack-ht16k33/issues"
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "homepage": "https://github.com/adkron/backpack-ht16k33"
+}
