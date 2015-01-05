@@ -41,7 +41,7 @@ function Backpack(hardware, callback) {
   }
 }
 
-Backpack.prototype.errorCallback = function(error) {
+Backpack.prototype._errorCallback = function(error) {
   if (error === 1) {
     self.emit('error', error);
   }
