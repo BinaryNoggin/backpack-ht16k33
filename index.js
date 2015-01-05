@@ -63,13 +63,15 @@ Backpack.prototype.clear = function(callback) {
 
 Backpack.prototype.writeBitmap = function(bitmap, callback) {
   var self = this;
+
   bitmap.forEach(function(row, index) {
-    rowValue = parseInt(row.join(""), 2);
-    self.i2c.send(new Buffer([index*2 &0xFF, rowValue]), console.log);
+    row.unshift(row.pop());
+    var rowValue = parseInt(row.join(""), 2);
+    self.i2c.send(new Buffer([index*2 &0xFF, rowValue]), self._errorCallback);
   });
 }
-// Every module needs a use function which calls the constructor
-function use (hardware, callback) {
+
+function use(hardware, callback) {
   return new Backpack(hardware, callback);
 }
 
