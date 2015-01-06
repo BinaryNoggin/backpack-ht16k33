@@ -72,6 +72,22 @@ Backpack.prototype.writeBitmap = function(bitmap, callback) {
   });
 }
 
+Backpack.prototype.animate = function(frames, interval) {
+  var self = this;
+
+  if (frames.length > 0) {
+    self.writeBitmap(frames[0]);
+    setTimeout(self._animate(frames.slice(1, frames.length), interval), interval);
+  }
+}
+
+Backpack.prototype._animate = function(frames, interval) {
+  var self = this;
+  return function() {
+    self.animate(frames, interval);
+  }
+}
+
 function use(hardware, callback) {
   return new Backpack(hardware, callback);
 }

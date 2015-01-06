@@ -38,6 +38,7 @@ backpack.on('ready', function() {
 
 &#x20;<a href="#api-backpack-writeBitmap-bitmap-callback-err" name="api-backpack-writeBitmap-bitmap-callback-err">#</a> backpack<b>.writeBitmap</b> ( bitmap, callback(err) ) the bitmap is and array of bits. Each 1 will be turned on and the 0 will be turned off.
 
+&#x20;<a href="#api-backpack-animate-callback-err" name="api-backpack-clear-callback-err">#</a> backpack<b>.animate</b> ( frames, interval ) renders each frame in order with a separation in ms equal to the interval
 
 ###Events
 &#x20;<a href="#api-backpack-on-error-callback-err-Emitted-upon-error" name="api-backpack-on-error-callback-err-Emitted-upon-error">#</a> backpack<b>.on</b>( 'error', callback(err) ) Emitted upon error.
@@ -45,7 +46,50 @@ backpack.on('ready', function() {
 &#x20;<a href="#api-backpack-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module" name="api-backpack-on-ready-callback-Emitted-upon-first-successful-communication-between-the-Tessel-and-the-module">#</a> backpack<b>.on</b>( 'ready', callback() ) Emitted upon first successful communication between the Tessel and the module.
 
 ###Further Examples
-* None at this time
+```js
+var tessel = require("tessel");
+var backpack = require('../').use(tessel.port['A']);
+
+backpack.on('ready', function() {
+  backpack.clear();
+  var smile = [
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [1,0,1,0,0,1,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,1,0,0,1,0,1],
+    [1,0,0,1,1,0,0,1],
+    [0,1,0,0,0,0,1,0],
+    [0,0,1,1,1,1,0,0],
+  ];
+
+  var straight = [
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [1,0,1,0,0,1,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,1,1,1,1,0,1],
+    [0,1,0,0,0,0,1,0],
+    [0,0,1,1,1,1,0,0],
+  ];
+
+  var frown = [
+    [0,0,1,1,1,1,0,0],
+    [0,1,0,0,0,0,1,0],
+    [1,0,1,0,0,1,0,1],
+    [1,0,0,0,0,0,0,1],
+    [1,0,0,1,1,0,0,1],
+    [1,0,1,0,0,1,0,1],
+    [0,1,0,0,0,0,1,0],
+    [0,0,1,1,1,1,0,0],
+  ];
+
+  var frames = [smile, straight, frown];
+  backpack.animate(frames, 500);
+});
+
+```
 
 ###Hardware specifications and Advanced Information
 
