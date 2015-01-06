@@ -64,12 +64,17 @@ Backpack.prototype.clear = function(callback) {
 
 Backpack.prototype.writeBitmap = function(bitmap, callback) {
   var self = this;
+  bitmap.forEach(self.writeRow);
+}
 
-  bitmap.forEach(function(row, index) {
-    var shiftedRow = row.slice(-1).concat(row.slice(0,-1));
-    var rowValue = parseInt(shiftedRow.join(""), 2);
-    self.i2c.send(new Buffer([index*2 & 0xFF, rowValue]), self._errorCallback);
-  });
+Backpack.prototype.writeRow(index, row) {
+  var rowBuffer = new Buffer([index*2 & 0xFF, self._rowValueOf(row)])
+  self.i2c.send(rowBuffer, self._errorCallback);
+}
+
+Backpack.prototype._rowValueOf(row) {
+  var shiftedRow = row.slice(-1).concat(row.slice(0,-1));
+  return parseInt(shiftedRow.join(""), 2);
 }
 
 Backpack.prototype.animate = function(frames, interval) {

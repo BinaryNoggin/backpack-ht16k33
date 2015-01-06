@@ -40,6 +40,8 @@ backpack.on('ready', function() {
 
 &#x20;<a href="#api-backpack-animate-callback-err" name="api-backpack-clear-callback-err">#</a> backpack<b>.animate</b> ( frames, interval ) renders each frame in order with a separation in ms equal to the interval
 
+&#x20;<a href="#api-backpack-writeRow" name="api-backpack-writeRow">#</a> backpack<b>.writeRow</b> ( index, row ) write a row to the matrix
+
 ###Events
 &#x20;<a href="#api-backpack-on-error-callback-err-Emitted-upon-error" name="api-backpack-on-error-callback-err-Emitted-upon-error">#</a> backpack<b>.on</b>( 'error', callback(err) ) Emitted upon error.
 
