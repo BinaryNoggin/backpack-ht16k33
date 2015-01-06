@@ -18,6 +18,16 @@ var HT16K33_BLINK_DISPLAYON = 0x01;
 var HT16K33_BLINK_OFF = 0x00;
 var HT16K33_CMD_BRIGHTNESS = 0xE0;
 var brightness_level = 15;
+var clearBitmap = [
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0],
+];
 
 function Backpack(hardware, callback) {
   var self = this;
@@ -51,14 +61,7 @@ util.inherits(Backpack, EventEmitter);
 
 Backpack.prototype.clear = function(callback) {
   var self = this;
-  self.i2c.send(new Buffer([0x00, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x02, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x04, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x06, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x08, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x0A, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x0C, 0x00]), self._errorCallback);
-  self.i2c.send(new Buffer([0x0E, 0x00]), self._errorCallback);
+  self.writeBitmap(clearBitmap);
 };
 
 Backpack.prototype.writeBitmap = function(bitmap, callback) {
@@ -67,7 +70,7 @@ Backpack.prototype.writeBitmap = function(bitmap, callback) {
   bitmap.forEach(function(row, index) {
     row.unshift(row.pop());
     var rowValue = parseInt(row.join(""), 2);
-    self.i2c.send(new Buffer([index*2 &0xFF, rowValue]), self._errorCallback);
+    self.i2c.send(new Buffer([index*2 & 0xFF, rowValue]), self._errorCallback);
   });
 }
 
