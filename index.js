@@ -66,8 +66,8 @@ Backpack.prototype.writeBitmap = function(bitmap, callback) {
   var self = this;
 
   bitmap.forEach(function(row, index) {
-    row.unshift(row.pop());
-    var rowValue = parseInt(row.join(""), 2);
+    var shiftedRow = row.slice(-1).concat(row.slice(0,-1));
+    var rowValue = parseInt(shiftedRow.join(""), 2);
     self.i2c.send(new Buffer([index*2 & 0xFF, rowValue]), self._errorCallback);
   });
 }
