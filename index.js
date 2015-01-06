@@ -40,12 +40,10 @@ function Backpack(hardware, callback) {
 
   self.i2c.send(new Buffer([HT16K33_BLINK_CMD | HT16K33_BLINK_DISPLAYON | HT16K33_BLINK_OFF , HT16K33_CMD_BRIGHTNESS | brightness_level]), self._errorCallback)
 
-  // Emit the ready event when everything is set up
   setImmediate(function emitReady() {
     self.emit('ready');
   });
 
-  // Call the callback with object
   if (callback) {
     callback(null, self);
   }
