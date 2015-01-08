@@ -1,6 +1,6 @@
 {
   "name": "backpack-ht16k33",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Use to support the adafruit led backpacks - ht16k33",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
    },
   "repository": {
     "type": "git",
-    "url": "http://github.com/adkron/backpack-ht16k33"
+    "url": "http://github.com/BinaryNoggin/backpack-ht16k33"
   },
   "keywords": [
     "tessel",
