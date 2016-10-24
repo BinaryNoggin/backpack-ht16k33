@@ -89,6 +89,37 @@ Backpack.prototype._animate = function(frames, interval) {
   }
 }
 
+Backpack.prototype.scroll = function(bitmap, interval) {
+  var self = this;
+
+  var length = bitmap[0].length;
+
+  var paddedBitmap = [];
+
+  bitmap.forEach(function(row,index) {
+      paddedBitmap[index] = row.slice();
+      paddedBitmap[index].push.apply(paddedBitmap[index],[0,0,0,0,0,0,0,0]);
+      paddedBitmap[index].unshift(0,0,0,0,0,0,0,0);
+    });
+
+  var n = 0;
+  var writeScroll = function() {
+    var currentBitmap = [];
+
+    paddedBitmap.forEach(function(row,index) {
+      currentBitmap[index] = row.slice(0,8);
+      row.shift();
+    });
+
+    self.writeBitmap(currentBitmap);
+
+    n++;
+    if(n<=length+8) setTimeout(writeScroll, interval);
+  }
+
+  setTimeout(writeScroll, interval);
+}
+
 function use(hardware, callback) {
   return new Backpack(hardware, callback);
 }
