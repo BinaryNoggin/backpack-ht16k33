@@ -66,7 +66,7 @@ Backpack.prototype.writeBitmap = function(bitmap, callback) {
   var self = this;
 
   bitmap.forEach(function(row, index) {
-    var rowBuffer = row.slice();
+    var rowBuffer = row.slice().reverse();
     rowBuffer.unshift(rowBuffer.pop());
     var rowValue = parseInt(rowBuffer.join(""), 2);
     self.i2c.send(new Buffer([index*2 & 0xFF, rowValue]), self._errorCallback);
