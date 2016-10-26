@@ -66,8 +66,9 @@ Backpack.prototype.writeBitmap = function(bitmap, callback) {
   var self = this;
 
   bitmap.forEach(function(row, index) {
-    row.unshift(row.pop());
-    var rowValue = parseInt(row.join(""), 2);
+    var rowBuffer = row.slice().reverse();
+    rowBuffer.unshift(rowBuffer.pop());
+    var rowValue = parseInt(rowBuffer.join(""), 2);
     self.i2c.send(new Buffer([index*2 & 0xFF, rowValue]), self._errorCallback);
   });
 }
@@ -86,6 +87,37 @@ Backpack.prototype._animate = function(frames, interval) {
   return function() {
     self.animate(frames, interval);
   }
+}
+
+Backpack.prototype.scroll = function(bitmap, interval) {
+  var self = this;
+
+  var length = bitmap[0].length;
+
+  var paddedBitmap = [];
+
+  bitmap.forEach(function(row,index) {
+      paddedBitmap[index] = row.slice();
+      paddedBitmap[index].push.apply(paddedBitmap[index],[0,0,0,0,0,0,0,0]);
+      paddedBitmap[index].unshift(0,0,0,0,0,0,0,0);
+    });
+
+  var n = 0;
+  var writeScroll = function() {
+    var currentBitmap = [];
+
+    paddedBitmap.forEach(function(row,index) {
+      currentBitmap[index] = row.slice(0,8);
+      row.shift();
+    });
+
+    self.writeBitmap(currentBitmap);
+
+    n++;
+    if(n<=length+8) setTimeout(writeScroll, interval);
+  }
+
+  setTimeout(writeScroll, interval);
 }
 
 function use(hardware, callback) {
