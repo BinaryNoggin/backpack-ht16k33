@@ -1,6 +1,6 @@
 {
   "name": "backpack-ht16k33",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Use to support the adafruit led backpacks - ht16k33",
   "main": "index.js",
   "scripts": {
