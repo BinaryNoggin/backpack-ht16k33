@@ -9,6 +9,7 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
+var ledChars = require('./chars');
 
 var I2C_ADDRESS = 0x70;
 
@@ -62,6 +63,34 @@ Backpack.prototype.clear = function(callback) {
   self.writeBitmap(clearBitmap);
 };
 
+Backpack.prototype._prepareText = function(text, monospace) {
+  var letters = text.split('');
+  var frames = [];
+
+  letters.forEach(function(char, index) {
+    frames.push(ledChars.getChar(char, monospace).slice());
+  });
+
+  return frames;
+}
+
+Backpack.prototype.scrollText = function(text, interval, monospace) {
+  var frames = this._prepareText(text, monospace);
+  var concatedFrames = Array(8).fill([]);
+
+  for (let index of frames.keys()) {
+    for (let line of frames[index].keys()) {
+      concatedFrames[line] = concatedFrames[line].concat(frames[index][line]);
+
+      if (!monospace) {
+        concatedFrames[line].push(0);
+      }
+    }
+  }
+
+  this.scroll(concatedFrames, interval);
+}
+
 Backpack.prototype.writeBitmap = function(bitmap, callback) {
   var self = this;
 
@@ -96,7 +125,7 @@ Backpack.prototype.scroll = function(bitmap, interval) {
 
   var paddedBitmap = [];
 
-  bitmap.forEach(function(row,index) {
+  bitmap.forEach(function(row, index) {
       paddedBitmap[index] = row.slice();
       paddedBitmap[index].push.apply(paddedBitmap[index],[0,0,0,0,0,0,0,0]);
       paddedBitmap[index].unshift(0,0,0,0,0,0,0,0);
