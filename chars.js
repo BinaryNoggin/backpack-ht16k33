@@ -1,3 +1,5 @@
+// Created with https://xantorohara.github.io/led-matrix-editor
+
 const chars = {
   A: [
     [0, 0, 0, 0, 0, 0],
@@ -1072,12 +1074,13 @@ module.exports.getChar = function(char, monospace) {
 
   if (monospace === true) {
     var charBuffer = chars[char];
-    if (charBuffer.length < 8) {
-      if (charBuffer.length%2 !== 0) {
+
+    if (charBuffer[0].length < 8) {
+      if (charBuffer[0].length%2 !== 0) {
         charBuffer = padChar(charBuffer, true, false);
       }
 
-      while (charBuffer.length < 8) {
+      while (charBuffer[0].length < 8) {
         charBuffer = padChar(charBuffer, true, true);
       }
     }

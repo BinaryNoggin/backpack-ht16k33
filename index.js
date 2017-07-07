@@ -63,25 +63,28 @@ Backpack.prototype.clear = function(callback) {
   self.writeBitmap(clearBitmap);
 };
 
-Backpack.prototype._prepareText = function(text) {
+Backpack.prototype._prepareText = function(text, monospace) {
   var letters = text.split('');
   var frames = [];
 
   letters.forEach(function(char, index) {
-    frames.push(ledChars.getChar(char).slice());
+    frames.push(ledChars.getChar(char, monospace).slice());
   });
 
   return frames;
 }
 
-Backpack.prototype.scrollText = function(text, interval) {
-  var frames = this._prepareText(text);
+Backpack.prototype.scrollText = function(text, interval, monospace) {
+  var frames = this._prepareText(text, monospace);
   var concatedFrames = Array(8).fill([]);
 
   for (let index of frames.keys()) {
     for (let line of frames[index].keys()) {
       concatedFrames[line] = concatedFrames[line].concat(frames[index][line]);
-      concatedFrames[line].push(0);
+
+      if (!monospace) {
+        concatedFrames[line].push(0);
+      }
     }
   }
 
