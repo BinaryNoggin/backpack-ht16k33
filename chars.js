@@ -1178,7 +1178,7 @@ function padChar(char, left, right) {
 }
 
 module.exports.getChar = function(char, monospace) {
-  if (chars.hasOwnProperty(char) == -1) {
+  if (!chars.hasOwnProperty(char)) {
     throw new Error('Unknow char: ' + char);
   }
 
