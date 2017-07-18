@@ -74,21 +74,32 @@ Backpack.prototype._prepareText = function(text, monospace) {
   return frames;
 }
 
-Backpack.prototype.scrollText = function(text, interval, monospace) {
+Backpack.prototype.getTextFrames = function(text, monospace, singleFrame) {
   var frames = this._prepareText(text, monospace);
-  var concatedFrames = Array(8).fill([]);
 
-  for (let index of frames.keys()) {
-    for (let line of frames[index].keys()) {
-      concatedFrames[line] = concatedFrames[line].concat(frames[index][line]);
+  if (singleFrame) {
+    var concatedFrames = Array(8).fill([]);
 
-      if (!monospace) {
-        concatedFrames[line].push(0);
+    for (let index of frames.keys()) {
+      for (let line of frames[index].keys()) {
+        concatedFrames[line] = concatedFrames[line].concat(frames[index][line]);
+
+        if (!monospace) {
+          concatedFrames[line].push(0);
+        }
       }
     }
+
+    return concatedFrames;
   }
 
-  this.scroll(concatedFrames, interval);
+  return frames;
+}
+
+Backpack.prototype.scrollText = function(text, interval, monospace, callback) {
+  var frame = this.getTextFrames(text, monospace, true);
+
+  this.scroll(frame, interval, callback);
 }
 
 Backpack.prototype.writeBitmap = function(bitmap, callback) {
@@ -118,7 +129,7 @@ Backpack.prototype._animate = function(frames, interval) {
   }
 }
 
-Backpack.prototype.scroll = function(bitmap, interval) {
+Backpack.prototype.scroll = function(bitmap, interval, callback) {
   var self = this;
 
   var length = bitmap[0].length;
@@ -143,7 +154,13 @@ Backpack.prototype.scroll = function(bitmap, interval) {
     self.writeBitmap(currentBitmap);
 
     n++;
-    if(n<=length+8) setTimeout(writeScroll, interval);
+    if (n <= length + 8) {
+      setTimeout(writeScroll, interval);
+    } else {
+      if(callback) {
+        callback();
+      }
+    }
   }
 
   setTimeout(writeScroll, interval);
